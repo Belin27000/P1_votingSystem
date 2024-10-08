@@ -5,66 +5,45 @@ pragma solidity ^0.8.27;
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
 
 contract Voting is Ownable{
-    
 
-
-    struct Voter {bool isRegistered; bool hasVoted; uint votedProposalID;} //Structure de données des voters
-    struct Proposal {string description; uint voteCount;}//Structure de données des porposals
-
-    enum WorkflowStatus { RegisteringVoters,
+    enum WorkflowStatus {
+        RegisteringVoters,
         ProposalsRegistrationStarted,
         ProposalsRegistrationEnded,
         VotingSessionStarted,
         VotingSessionEnded,
         VotesTallied
-    } // Definiton des différents états d'un vote 
-    
-    WorkflowStatus public state = WorkflowStatus.VotesTallied;
+    }
+    WorkflowStatus private  state;
 
-    event VoterRegistered(address voterAddress);
+    constructor() Ownable(msg.sender){ //Specifie que le proprietaire du contrat et celui qui l'a deployé
+        state = WorkflowStatus.VotesTallied;     //Definit l'état inital
+    }
+
     event WorkflowStatusChange(WorkflowStatus previousStatus, WorkflowStatus newStatus);
 
-    //Définition du status initial ainsi que l'administrateur du contrat
-    constructor() Ownable(msg.sender) {
-        state = WorkflowStatus.VotesTallied;
-    }
+    function nextVotingStatus() public onlyOwner{ //Definis le status à l'etape suivante
+        WorkflowStatus previousStatus=state; //stock la valeur de status avant modification dans previousStatus
 
-    event ProposalRegistered(uint proposalId);
-    event Voted (address voter, uint proposalId);
-
-
-    //Modification du status du processus de vote
-    function nextStatus() public onlyOwner{
-        WorkflowStatus previousStatus = state;
-        if (state == WorkflowStatus.VotesTallied){ //Retroune au début de l'enum.
-            state = WorkflowStatus.RegisteringVoters;
+        if (state== WorkflowStatus.VotesTallied){
+            state = WorkflowStatus.RegisteringVoters; //Reviens au premier état si à la fin des enum Workflow
         }else{
-            state = WorkflowStatus(uint(state) + 1);
+            state = WorkflowStatus(uint(state)+1);
         }
-        //emission de l'événement de changement d'état
-        emit WorkflowStatusChange(previousStatus, state);
+        WorkflowStatus newStatus=state; //stock la valeur de status avant modification dans previousStatus
+        emit WorkflowStatusChange(previousStatus, newStatus); //Emet le changement de status du processus de vote sur la blockchain
     }
 
-    mapping (address => bool) _whitelisted; // Mapping des adresses whitelisted
+    mapping (address => bool) whitelist; //Configuration de la liste blanche des address authorisée à voter
+    event VoterRegistered(address voterAddress);
 
-    //Défintion de la whitelist
-    function whitelist (address _address) public  onlyOwner{
-        require(state == WorkflowStatus.RegisteringVoters,"whitelist can only be updated during Voter Registration phase.");
-        require(!_whitelisted[_address], "Adress already whitelisted");
-        _whitelisted[_address]=true;
+    function _whitelist(address _address) public onlyOwner{
+        require(state == WorkflowStatus.RegisteringVoters,"Address can be added only in Registration phase"); //Check que nous sommes bien dans la phase d'enregistrement des adresses
+        require(!whitelist[_address],"Address already registered");//Check si l'addresse n'est pas déjà dans la whitelist
+        whitelist[_address]=true; //Ajoute l'addresse si elle n'est pas dans la liste
 
-        emit VoterRegistered(_address); //emission de l'adresse whitlisted
-
+        emit VoterRegistered(_address); //emet sur la blockchain l'adresse whitelisted
     }
-
-
-
-    function winningProposalId() public{
-
-    }
-    function getWinner() public{
-
-    }
-
-
+    
+    
 }
