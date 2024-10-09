@@ -37,14 +37,17 @@ contract Voting is Ownable{
     }
 
     mapping (address => bool) whitelist; //Configuration de la liste blanche des address authorisée à voter
+    uint private _whitelistCount; //Compteur de nombre d'addresse dans la whiteliste.
     event VoterRegistered(address voterAddress);
 
     //L'administrateur enregistre les adresse Ethereum sur liste blanche
 
     function _whitelist(address _address) public onlyOwner{
-        require(state == WorkflowStatus.RegisteringVoters,"Address can be added only in Registration phase"); //Check que nous sommes bien dans la phase d'enregistrement des adresses
+        require(state == WorkflowStatus.RegisteringVoters,"Address can be added only in Registration phase:0"); //Check que nous sommes bien dans la phase d'enregistrement des adresses
         require(!whitelist[_address],"Address already registered");//Check si l'addresse n'est pas déjà dans la whitelist
         whitelist[_address]=true; //Ajoute l'addresse si elle n'est pas dans la liste
+
+        _whitelistCount++;//Incremente le compteur de nombre d'addresse dans la whiteliste.
 
         emit VoterRegistered(_address); //emet sur la blockchain l'adresse whitelisted
     }
@@ -54,9 +57,11 @@ contract Voting is Ownable{
 
     struct Proposal { string description; uint voteCount; }
     Proposal[] public proposals;
+    event ProposalRegistered(uint proposalId);
 
     function _addProposal (string memory _description) external {
-        require(state == WorkflowStatus.ProposalsRegistrationStarted,"Proposal can be addes only in Proposal Registration phase"); //Check que nous sommes bien dans la phase d'enregistrement des adresses
+        require(state == WorkflowStatus.ProposalsRegistrationStarted,"Proposal can be addes only in Proposal Registration phase:1"); //Check que nous sommes bien dans la phase d'enregistrement des adresses
+        require(_whitelistCount>0,"Whitelist must contain at least one address");
         require(whitelist[msg.sender],"Your adress is not whitelisted");
 
         proposals.push(Proposal({
@@ -64,10 +69,16 @@ contract Voting is Ownable{
             voteCount:0
 
         }));
+        uint proposalId = proposals.length-1;
+        emit ProposalRegistered(proposalId);
 
     }
     function getProposalCount() external view returns (uint){
         return proposals.length;
+    }
+
+    function getAllProposal()external view returns(Proposal[] memory){
+        return proposals;
     }
 
 /* L'administrateur de vote met fin à la session d'enregistrement des propositions.
