@@ -39,9 +39,9 @@ contract Voting is Ownable{
 
     mapping (address => bool) whitelist; 
     mapping (address => Voter) voters; //Configuration des voters;
-    Proposal[] public proposals;
+    Proposal[] private proposals;
     uint private whitelistCount; //Compteur de nombre d'addresse dans la whiteliste.
-    Proposal[] public winners;
+    Proposal[] private winners;
 
     //L'administrateur change la phase du processus de vente
     
@@ -105,7 +105,7 @@ contract Voting is Ownable{
     
 
     function Vote(uint _choice ) external {
-        require(state == WorkflowStatus.VotingSessionStarted,"Proposal can be addes only in voting phase:3"); //Check que nous sommes bien dans la phase de vote des proposal
+        require(state == WorkflowStatus.VotingSessionStarted,"Votes can be done only in voting phase:3"); //Check que nous sommes bien dans la phase de vote des proposal
         require(proposals.length>0,"You have to get at leat one proposal in order to proceed a voting phase");
         require(voters[msg.sender].isRegistered, "You ar not registered as a voter");
         require(!voters[msg.sender].hasVoted,"You have already voted");
@@ -117,6 +117,47 @@ contract Voting is Ownable{
 
         emit Voted(msg.sender,_choice);        
     }
+    function getWinner () external onlyOwner{
+        require(state ==WorkflowStatus.VotesTallied,"Votes must be tailed before annoncing the winner");
+        require(proposals.length>0,"No proposals available");
+
+        uint winningVoteCount = 0;
+        delete winners;
+        /* uint winningProposalIndex = 0; */
+
+        for (uint i=0;i<proposals.length;i++){ //cherche la valeur de votes la plus hautes.
+            if(proposals[i].voteCount>winningVoteCount){
+                winningVoteCount = proposals[i].voteCount;
+            }
+        }
+
+        /* uint winnerCount = 0; */
+
+        for (uint i=0; i<proposals.length; i++){ //Compte le nombre de proposition avec la valeur de vote les plus haute
+            if(proposals[i].voteCount == winningVoteCount){
+                winners.push(proposals[i]);
+            }
+        }
+/* 
+        Proposal[] memory winners = new Proposal[](winnerCount);
+        uint index = 0;
+
+        for(uint i; i<proposals.length; i++){
+            if(proposals[i].voteCount ==winningVoteCount){
+                winners[index]=proposals[i];
+                index++;
+            }
+        }
+
+        return winners; */
+
+    }
+
+    function checkWinner()external view returns(Proposal[] memory){
+        require(proposals.length>0,"No winner yet");
+        return winners;
+    }
+
 /* L'administrateur de vote met fin à la session d'enregistrement des propositions.
 
 L'administrateur du vote commence la session de vote.

@@ -156,6 +156,31 @@
 			},
 			{
 				"inputs": [],
+				"name": "checkWinner",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "description",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "voteCount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Voting.Proposal[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "getAllProposal",
 				"outputs": [
 					{
@@ -194,6 +219,13 @@
 			},
 			{
 				"inputs": [],
+				"name": "getWinner",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "nextVotingStatus",
 				"outputs": [],
 				"stateMutability": "nonpayable",
@@ -207,30 +239,6 @@
 						"internalType": "address",
 						"name": "",
 						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"name": "proposals",
-				"outputs": [
-					{
-						"internalType": "string",
-						"name": "description",
-						"type": "string"
-					},
-					{
-						"internalType": "uint256",
-						"name": "voteCount",
-						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -254,30 +262,6 @@
 				"name": "transferOwnership",
 				"outputs": [],
 				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"name": "winners",
-				"outputs": [
-					{
-						"internalType": "string",
-						"name": "description",
-						"type": "string"
-					},
-					{
-						"internalType": "uint256",
-						"name": "voteCount",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
 				"type": "function"
 			}
 		],
@@ -331,11 +315,11 @@
 	},
 	"sources": {
 		"contracts/Voting.sol": {
-			"keccak256": "0x3a1398fa9f5450bd7d4e3405ac7bc4efcb0de181f7b185ce4044c39e7caa419c",
+			"keccak256": "0x243fa2dac3baa63b5025e74997e4446ffe18e91d7cd287ff5f41cb30def6e901",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://28b3843ab7acba4b9ffd722c922990a991127afc328ca697259030917643282c",
-				"dweb:/ipfs/QmWNn4kbdn4QVrztcwoQotsvbP3gLLFgDMqFabM3wcwMNh"
+				"bzz-raw://22ba0049f8d029f4f5244bfee85421b58d93bf6d3718fb30f3717962b2396353",
+				"dweb:/ipfs/QmRbda7eJ2RmNRKhkEKpiADvzHDgJiT4gFFngKXndsiUtg"
 			]
 		},
 		"https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol": {
