@@ -86,6 +86,19 @@
 			{
 				"inputs": [
 					{
+						"internalType": "string",
+						"name": "_description",
+						"type": "string"
+					}
+				],
+				"name": "_addProposal",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "address",
 						"name": "_address",
 						"type": "address"
@@ -94,6 +107,19 @@
 				"name": "_whitelist",
 				"outputs": [],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getProposalCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -111,6 +137,30 @@
 						"internalType": "address",
 						"name": "",
 						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "proposals",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "description",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "voteCount",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -187,11 +237,11 @@
 	},
 	"sources": {
 		"contracts/Voting.sol": {
-			"keccak256": "0xcbfbdab9c106359cd36091ea9a320fbe84e179da97384969205d376d9de608fd",
+			"keccak256": "0x4c5757f2354714502eaa4151aa260ca6df9ef1e2c1ca94b6f52ffe83ea9ed634",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://c970f3707d9ac0914d1bb957737d7589a3e506426ed280997e75dae86bce4277",
-				"dweb:/ipfs/QmNjvkNaEzB1WXgJ1ofsaTY1HiZ1L1MF3yyjGoEXFfEP7q"
+				"bzz-raw://50ea76ab4254d87f8d2b8152e72586f62497ae3e50d16cebd357038bc060056f",
+				"dweb:/ipfs/QmU9w6aLXjk3PFSWU92SQhH2PjvnrQ32oMsgCZUA1hY8xi"
 			]
 		},
 		"https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol": {
