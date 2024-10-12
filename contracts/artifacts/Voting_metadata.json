@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.27+commit.40a35a09"
+		"version": "0.8.28+commit.7893614a"
 	},
 	"language": "Solidity",
 	"output": {
@@ -136,20 +136,7 @@
 						"type": "string"
 					}
 				],
-				"name": "_addProposal",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_address",
-						"type": "address"
-					}
-				],
-				"name": "_whitelist",
+				"name": "addProposal",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -255,6 +242,19 @@
 				"inputs": [
 					{
 						"internalType": "address",
+						"name": "_address",
+						"type": "address"
+					}
+				],
+				"name": "setWhitelist",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
 						"name": "newOwner",
 						"type": "address"
 					}
@@ -315,11 +315,11 @@
 	},
 	"sources": {
 		"contracts/Voting.sol": {
-			"keccak256": "0x243fa2dac3baa63b5025e74997e4446ffe18e91d7cd287ff5f41cb30def6e901",
+			"keccak256": "0x6476928dc43d832311d6bf2bc7007d4f976a14182f22a520d218786ea6399ca0",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://22ba0049f8d029f4f5244bfee85421b58d93bf6d3718fb30f3717962b2396353",
-				"dweb:/ipfs/QmRbda7eJ2RmNRKhkEKpiADvzHDgJiT4gFFngKXndsiUtg"
+				"bzz-raw://3de778a961dc8c73b53d453c6a8b8ac08da3e3e579fd20370ebdd4e9eefe33e8",
+				"dweb:/ipfs/QmTsMwFe3HQqgr9gAmhhYvb37bAzuCvPKZGWb1kaFuCY6y"
 			]
 		},
 		"https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol": {

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity ^0.8.27;
+pragma solidity ^0.8.28;
 
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
 
@@ -61,8 +61,9 @@ contract Voting is Ownable{
 
     //L'administrateur enregistre les adresse Ethereum sur liste blanche
 
-    function _whitelist(address _address) public onlyOwner{
-        require(state == WorkflowStatus.RegisteringVoters,"Address can be added only in Registration phase:0"); //Check que nous sommes bien dans la phase d'enregistrement des adresses
+    function setWhitelist(address _address) public onlyOwner{
+        require(state == WorkflowStatus.RegisteringVoters,"Address can be added only in Registration phase:0."); //Check que nous sommes bien dans la phase d'enregistrement des adresses
+
         require(!whitelist[_address],"Address already registered");//Check si l'addresse n'est pas déjà dans la whitelist
 
         voters[_address]= Voter({
@@ -81,8 +82,8 @@ contract Voting is Ownable{
     pendant que la session d'enregistrement est active. */
 
 
-    function _addProposal (string memory _description) external {
-        require(state == WorkflowStatus.ProposalsRegistrationStarted,"Proposal can be addes only in Proposal Registration phase:1"); //Check que nous sommes bien dans la phase d'enregistrement des adresses
+    function addProposal (string memory _description) external {
+        require(state == WorkflowStatus.ProposalsRegistrationStarted,"Proposal can be addes only in Proposal Registration phase:1."); //Check que nous sommes bien dans la phase d'enregistrement des adresses
         require(whitelistCount>0,"Whitelist must contain at least one address");
         require(whitelist[msg.sender],"Your adress is not whitelisted");
 
@@ -105,7 +106,7 @@ contract Voting is Ownable{
     
 
     function Vote(uint _choice ) external {
-        require(state == WorkflowStatus.VotingSessionStarted,"Votes can be done only in voting phase:3"); //Check que nous sommes bien dans la phase de vote des proposal
+        require(state == WorkflowStatus.VotingSessionStarted,"Votes can be done only in voting phase:3."); //Check que nous sommes bien dans la phase de vote des proposal
         require(proposals.length>0,"You have to get at leat one proposal in order to proceed a voting phase");
         require(voters[msg.sender].isRegistered, "You ar not registered as a voter");
         require(!voters[msg.sender].hasVoted,"You have already voted");
@@ -118,7 +119,7 @@ contract Voting is Ownable{
         emit Voted(msg.sender,_choice);        
     }
     function getWinner () external onlyOwner{
-        require(state ==WorkflowStatus.VotesTallied,"Votes must be tailed before annoncing the winner");
+        require(state ==WorkflowStatus.VotesTallied,"Votes must be tailed before annoncing the winner in Phase 5.");
         require(proposals.length>0,"No proposals available");
 
         uint winningVoteCount = 0;
@@ -157,17 +158,4 @@ contract Voting is Ownable{
         require(proposals.length>0,"No winner yet");
         return winners;
     }
-
-/* L'administrateur de vote met fin à la session d'enregistrement des propositions.
-
-L'administrateur du vote commence la session de vote.
-
-Les électeurs inscrits votent pour leur proposition préférée.
-
-L'administrateur du vote met fin à la session de vote.
-
-L'administrateur du vote comptabilise les votes.
-
-Tout le monde peut vérifier les derniers détails de la proposition gagnante.
-     */
 }
